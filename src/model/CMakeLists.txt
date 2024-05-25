@@ -33,14 +33,22 @@ set(NMCS_MODEL_SOURCES
   modelfabric.cpp
 )
 
-set(NMCS_MODEL_DEPENDENCIES
+set(NMCS_PUBLIC_MODEL_DEPENDENCIES
   nmcsruntime
 )
 
-add_library(nmcsmodel ${NMCS_MODEL_INCLUDES} ${NMCS_MODEL_SOURCES})
+add_library(nmcsmodel
+  ${NMCS_MODEL_INCLUDES}
+  ${NMCS_MODEL_SOURCES}
+)
 
-add_dependencies(nmcsmodel ${NMCS_MODEL_DEPENDENCIES})
-target_link_libraries(nmcsmodel ${NMCS_MODEL_DEPENDENCIES})
+# add_dependencies(nmcsmodel
+#   ${NMCS_PUBLIC_MODEL_DEPENDENCIES}
+# )
+
+target_link_libraries(nmcsmodel PUBLIC
+  ${NMCS_PUBLIC_MODEL_DEPENDENCIES}
+)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(nmcsmodel PROPERTIES VERSION ${PROJECT_VERSION})

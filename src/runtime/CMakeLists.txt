@@ -45,14 +45,22 @@ set(NMCS_RUNTIME_SOURCES
   runtimeversion.cpp
 )
 
-set(NMCS_RUNTIME_DEPENDENCIES
+set(NMCS_PUBLIC_RUNTIME_DEPENDENCIES
   nmcsplatform
 )
 
-add_library(nmcsruntime ${NMCS_RUNTIME_INCLUDES} ${NMCS_RUNTIME_SOURCES})
+add_library(nmcsruntime
+  ${NMCS_RUNTIME_INCLUDES}
+  ${NMCS_RUNTIME_SOURCES}
+)
 
-add_dependencies(nmcsruntime ${NMCS_RUNTIME_DEPENDENCIES})
-target_link_libraries(nmcsruntime ${NMCS_RUNTIME_DEPENDENCIES})
+# add_dependencies(nmcsruntime
+#   ${NMCS_PUBLIC_RUNTIME_DEPENDENCIES}
+# )
+
+target_link_libraries(nmcsruntime PUBLIC
+  ${NMCS_PUBLIC_RUNTIME_DEPENDENCIES}
+)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(nmcsruntime PROPERTIES VERSION ${PROJECT_VERSION})

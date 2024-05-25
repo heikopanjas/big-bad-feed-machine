@@ -38,16 +38,21 @@ set(NMCS_PLATFORM_SOURCES
 )
 
 if(NMCS_TARGET_SYSTEM STREQUAL "darwin")
-  set(NMCS_PLATFORM_DEPENDENCIES
+  set(NMCS_PRIVATE_PLATFORM_DEPENDENCIES
     "-framework Carbon"
     "-framework IOKit"
     "-framework Security"
   )
 endif()
 
-add_library(nmcsplatform ${NMCS_PLATFORM_INCLUDES} ${NMCS_PLATFORM_SOURCES})
+add_library(nmcsplatform
+  ${NMCS_PLATFORM_INCLUDES}
+  ${NMCS_PLATFORM_SOURCES}
+)
 
-target_link_libraries(nmcsplatform ${NMCS_PLATFORM_DEPENDENCIES})
+target_link_libraries(nmcsplatform PRIVATE
+  ${NMCS_PRIVATE_PLATFORM_DEPENDENCIES}
+)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(nmcsplatform PROPERTIES VERSION ${PROJECT_VERSION})

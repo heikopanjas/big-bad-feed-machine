@@ -41,14 +41,18 @@ set(NMCS_CLIENT_SOURCES
   clienthexdump.cpp
 )
 
-set(NMCS_CLIENT_DEPENDENCIES
+set(NMCS_PUBLIC_CLIENT_DEPENDENCIES
   nmcsserver
 )
 
-add_executable(nmcsclient ${NMCS_CLIENT_INCLUDES} ${NMCS_CLIENT_SOURCES})
+add_executable(nmcsclient
+  ${NMCS_CLIENT_INCLUDES}
+  ${NMCS_CLIENT_SOURCES}
+)
 
-add_dependencies(nmcsclient ${NMCS_CLIENT_DEPENDENCIES})
-target_link_libraries(nmcsclient ${NMCS_CLIENT_DEPENDENCIES})
+target_link_libraries(nmcsclient PUBLIC
+  ${NMCS_PUBLIC_CLIENT_DEPENDENCIES}
+)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(nmcsclient PROPERTIES VERSION ${PROJECT_VERSION})

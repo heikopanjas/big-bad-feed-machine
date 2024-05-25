@@ -35,17 +35,25 @@ set(NMCS_AGENT_SOURCES
   agent.cpp
 )
 
-set(NMCS_AGENT_DEPENDENCIES
+set(NMCS_PUBLIC_AGENT_DEPENDENCIES
   nmcsplatform
   nmcsruntime
   nmcsmodel
   nmcsserver
 )
 
-add_executable(nmcsagent ${NMCS_AGENT_INCLUDES} ${NMCS_AGENT_SOURCES})
+add_executable(nmcsagent
+  ${NMCS_AGENT_INCLUDES}
+  ${NMCS_AGENT_SOURCES}
+)
 
-add_dependencies(nmcsagent ${NMCS_AGENT_DEPENDENCIES})
-target_link_libraries(nmcsagent ${NMCS_AGENT_DEPENDENCIES})
+# add_dependencies(nmcsagent
+#   ${NMCS_PUBLIC_AGENT_DEPENDENCIES}
+# )
+
+target_link_libraries(nmcsagent PUBLIC
+  ${NMCS_PUBLIC_AGENT_DEPENDENCIES}
+)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   set_target_properties(nmcsagent PROPERTIES VERSION ${PROJECT_VERSION})

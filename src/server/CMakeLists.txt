@@ -73,18 +73,29 @@ set(NMCS_SERVER_SOURCES
   serverurllinkframe.cpp
 )
 
-add_library(nmcsserver ${NMCS_SERVER_INCLUDES} ${NMCS_SERVER_SOURCES})
-
-add_dependencies(nmcsserver
+set(NMCS_PUBLIC_SERVER_DEPENDENCIES
   nmcsmodel
+)
+
+set(NMCS_PRIVATE_SERVER_DEPENDENCIES
   ${LIBCURL_LIBRARY}
   ${LIBXML2_LIBRARY}
   ${LIBSIMDJSON_LIBRARY}
   ${LIBSPDLOG_LIBRARY}
 )
 
-target_link_libraries(nmcsserver
-  nmcsmodel
+add_library(nmcsserver ${NMCS_SERVER_INCLUDES} ${NMCS_SERVER_SOURCES})
+
+# add_dependencies(nmcsserver
+#   ${NMCS_PUBLIC_SERVER_DEPENDENCIES}
+#   ${NMCS_PRIVATE_SERVER_DEPENDENCIES}
+# )
+
+target_link_libraries(nmcsserver PUBLIC
+  ${NMCS_PUBLIC_SERVER_DEPENDENCIES}
+)
+
+target_link_libraries(nmcsserver PRIVATE
   ${LIBCURL_LIBRARY_PATH}
   ${LIBXML2_LIBRARY_PATH}
   ${LIBSIMDJSON_LIBRARY_PATH}

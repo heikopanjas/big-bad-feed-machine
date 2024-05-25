@@ -171,8 +171,8 @@ if(ENABLE_SQLITE_GATEWAY)
     add_subdirectory("src/gateways/southbound/sqlite")
 endif()
 
-option(ENABLE_SQLITE_GATEWAY ON)
-if(ENABLE_SQLITE_GATEWAY)
+option(ENABLE_RSS_GATEWAY ON)
+if(ENABLE_RSS_GATEWAY)
     add_subdirectory("src/gateways/southbound/rss")
 endif()
 
@@ -182,7 +182,7 @@ install(TARGETS nmcsplatform
   LIBRARY DESTINATION "lib"
   ARCHIVE DESTINATION "lib/${PROJECT_NAME}"
 )
-install(DIRECTORY "${PROJECT_SOURCE_DIR}/include" DESTINATION include)
+install(DIRECTORY "include" DESTINATION include)
 
 set(CPACK_PACKAGE_NAME "nmcs")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${NMCS_VERSION}-build${NMCS_BUILD_ID}-${NMCS_TARGET_SYSTEM}")
