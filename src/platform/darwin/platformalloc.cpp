@@ -28,10 +28,10 @@
 
 namespace ultralove { namespace nmcs { namespace platform {
 
-void* Alloc(const size_t size)
+void* Alloc(const size_t size, const size_t alignment)
 {
    NMCS_PRECONDITION_RETURN(size > 0, nullptr);
-   return calloc(size, sizeof(uint8_t));
+   return calloc(NMCS_ROUND_UP(size, alignment), sizeof(uint8_t));
 }
 
 void Release(void*& ptr)

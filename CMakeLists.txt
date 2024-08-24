@@ -29,7 +29,7 @@ cmake_minimum_required(VERSION 3.23)
 project(nmcs
   VERSION 2.0.0
   DESCRIPTION "Network Media Control System"
-  LANGUAGES ASM C CXX
+  LANGUAGES C CXX
 )
 
 message(STATUS "NMCS_BUILD_ID = ${NMCS_BUILD_ID}")

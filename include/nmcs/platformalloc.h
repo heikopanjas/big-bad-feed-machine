@@ -34,8 +34,8 @@
 
 namespace ultralove { namespace nmcs { namespace platform {
 
-NMCS_SHARED_API void* Alloc(const size_t size);
-NMCS_SHARED_API void Release(void*& ptr);
+NMCS_SHARED_API void* Alloc(const size_t size, const size_t alignment = 16);
+NMCS_SHARED_API void  Release(void*& ptr);
 
 }}} // namespace ultralove::nmcs::platform
 
