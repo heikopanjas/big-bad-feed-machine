@@ -365,13 +365,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issues**: [https://github.com/ultralove/ultralove-nmcs/issues](https://github.com/ultralove/ultralove-nmcs/issues)
 - **Releases**: [https://github.com/ultralove/ultralove-nmcs/releases](https://github.com/ultralove/ultralove-nmcs/releases)
 
-## Support
-
-For support and questions:
-
-- Create an [issue](https://github.com/ultralove/ultralove-nmcs/issues) for bugs and feature requests
-- Contact: [staff@ultralove.io](mailto:staff@ultralove.io)
-
 ---
 
 Made with love by the [ultralove](https://github.com/ultralove) contributors
