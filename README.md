@@ -7,7 +7,7 @@
 
 A modern, cross-platform C++23 library system for controlling and managing network-based media services, with a particular focus on podcast and audio content management.
 
-## 🚀 Features
+## Features
 
 - **Cross-Platform Support**: Native support for macOS (Darwin), Linux, and Windows
 - **Modern C++**: Built with C++23 standards and C23 support
@@ -18,18 +18,18 @@ A modern, cross-platform C++23 library system for controlling and managing netwo
 - **Database Integration**: SQL Server/Azure SQL Edge support
 - **Platform Abstraction**: Native GUID generation, memory management, and security vault integration
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Architecture](#-architecture)
-- [Prerequisites](#-prerequisites)
-- [Building](#-building)
-- [Usage](#-usage)
-- [API Documentation](#-api-documentation)
-- [Development](#-development)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Building](#building)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🏗 Architecture
+## Architecture
 
 NMCS follows a modular, layered architecture:
 
@@ -69,7 +69,7 @@ NMCS follows a modular, layered architecture:
 - **Server Layer**: HTTP services, ID3v2 processing, file services, and service management
 - **Client/Agent Layer**: Applications and command-line tools
 
-## 📦 Prerequisites
+## Prerequisites
 
 ### Build Requirements
 
@@ -109,7 +109,7 @@ The build system automatically fetches and builds the following dependencies:
 - Visual Studio 2022 with C++23 support
 - Windows SDK
 
-## 🔨 Building
+## Building
 
 ### Quick Start
 
@@ -161,7 +161,7 @@ cmake --preset debug
 cmake --build --preset debug
 ```
 
-## 🎯 Usage
+## Usage
 
 ### Command Line Tools
 
@@ -221,7 +221,7 @@ target_link_libraries(your_target
 )
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 ### Core Namespaces
 
@@ -272,7 +272,7 @@ Common status codes:
 - `NMCS_STATUS_INVALID_PARAMETER` - Invalid parameter provided
 - `NMCS_STATUS_OUT_OF_MEMORY` - Memory allocation failed
 
-## 🔧 Development
+## Development
 
 ### Project Structure
 
@@ -323,7 +323,7 @@ cd scripts
 doxygen doxyfile
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our contributing guidelines:
 
@@ -355,17 +355,17 @@ git checkout -b feature/your-feature develop
 4. Add tests for new functionality
 5. Maintain cross-platform compatibility
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+## Links
 
 - **Repository**: [https://github.com/ultralove/ultralove-nmcs](https://github.com/ultralove/ultralove-nmcs)
 - **Issues**: [https://github.com/ultralove/ultralove-nmcs/issues](https://github.com/ultralove/ultralove-nmcs/issues)
 - **Releases**: [https://github.com/ultralove/ultralove-nmcs/releases](https://github.com/ultralove/ultralove-nmcs/releases)
 
-## 📞 Support
+## Support
 
 For support and questions:
 
@@ -374,4 +374,4 @@ For support and questions:
 
 ---
 
-Made with ❤️ by the [ultralove](https://github.com/ultralove) contributors
+Made with love by the [ultralove](https://github.com/ultralove) contributors
