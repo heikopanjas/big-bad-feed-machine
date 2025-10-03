@@ -26,7 +26,6 @@ A modern, cross-platform C++23 library system for controlling and managing netwo
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Development](#development)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Architecture
@@ -322,38 +321,6 @@ nmcs/
 cd scripts
 doxygen doxyfile
 ```
-
-## Contributing
-
-We welcome contributions! Please see our contributing guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Setup
-
-```bash
-# Clone your fork
-git clone https://github.com/your-username/ultralove-nmcs.git
-cd ultralove-nmcs
-
-# Set up upstream remote
-git remote add upstream https://github.com/ultralove/ultralove-nmcs.git
-
-# Create development branch
-git checkout -b feature/your-feature develop
-```
-
-### Code Review Process
-
-1. Ensure all tests pass
-2. Follow coding standards
-3. Update documentation as needed
-4. Add tests for new functionality
-5. Maintain cross-platform compatibility
 
 ## License
 
