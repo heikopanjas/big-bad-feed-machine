@@ -1,0 +1,110 @@
+.gitignore:
+  original_sha: 8d34f5de6bece386131110afff2b7e046c3d1ebef4fe427e4e0cc8e41c2e7d9c
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369315+00:00
+  lang:
+  - c++
+  agent: []
+  ref_count: 1
+  category: language
+AGENTS.md:
+  original_sha: 1f2456ea182cd0a47f521494cc37b010beb40fe45fb482506303cadd5fecfa3b
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369094+00:00
+  lang:
+  - c++
+  agent:
+  - claude
+  ref_count: 2
+  category: main
+.editorconfig:
+  original_sha: a755fd5d8c5746c2b154269d98238e4b3f9347ce75b02ec5e7a59da9c6fa4303
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369546+00:00
+  lang:
+  - c++
+  agent: []
+  ref_count: 1
+  category: language
+.claude/skills/cmake-build-commands/SKILL.md:
+  original_sha: a89c694d9cf4db3f29b46a807636a43c1b6b219c06e38266da1e623e0b22bd05
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.370150+00:00
+  lang:
+  - c++
+  agent: []
+  ref_count: 1
+  category: skill
+.claude/skills/git-workflow/SKILL.md:
+  original_sha: bd2de89a230a9231865805c5e230a42f2d9d9e5a515c96ab5cf551abdb7dd2cf
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.370514+00:00
+  lang:
+  - c++
+  agent:
+  - claude
+  ref_count: 2
+  category: skill
+UPDATES.md:
+  original_sha: ff56fd563cb60b9073230b3b0721e5687c98fd7888129b47f2bbc557e9c9c940
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369773+00:00
+  lang: []
+  agent: []
+  ref_count: 0
+  category: integration
+.claude/skills/cpp-coding-conventions/SKILL.md:
+  original_sha: 8fea3f55b36cb8e1c7075efbe73dab2a644e4ecfc3542acb294471d07d6049a7
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.370311+00:00
+  lang:
+  - c++
+  agent: []
+  ref_count: 1
+  category: skill
+.claude/skills/semantic-versioning/SKILL.md:
+  original_sha: def35d0dbd880443f63d53f0081368bd7daa9c768f39e728862216f4de716413
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.370724+00:00
+  lang:
+  - c++
+  agent:
+  - claude
+  ref_count: 2
+  category: skill
+.claude/commands/init-session.md:
+  original_sha: 0d2fd81c4fbae776c4b4f050bd0394e913796c6e597297487ca34d8e78ec5d7d
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369937+00:00
+  lang: []
+  agent:
+  - claude
+  ref_count: 1
+  category: agent
+.claude/skills/recent-updates/SKILL.md:
+  original_sha: 27fbb14192738a4e76042bf7322b4b529f4996354fa427700624deccd3ef6dc9
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.370884+00:00
+  lang:
+  - c++
+  agent:
+  - claude
+  ref_count: 2
+  category: skill
+.gitattributes:
+  original_sha: b06645d6d1fca42aa742230b5ea0875ba8b996198073db1872402a9ca7ac6356
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369661+00:00
+  lang: []
+  agent: []
+  ref_count: 0
+  category: integration
+.clang-format:
+  original_sha: a7e2ca6bead68e878b98ccd079a7f92037e737e8e2e1c0cd73fcadf845eea6d3
+  template_version: 5
+  installed_date: 2026-07-29T10:07:24.369437+00:00
+  lang:
+  - c++
+  agent: []
+  ref_count: 1
+  category: language
