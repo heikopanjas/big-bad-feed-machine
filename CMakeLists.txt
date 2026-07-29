@@ -24,7 +24,7 @@
 #
 ################################################################################
 
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.28)
 
 project(nmcs
   VERSION 2.0.0
@@ -72,9 +72,7 @@ else()
   message(FATAL_ERROR "Supported platforms are Windows, Darwin and Linux")
 endif()
 
-if(BUILD_SHARED_LIBS)
-  add_compile_definitions("NMCS_SHARED=1")
-endif()
+option(NMCS_BUILD_SHARED "Build the nmcs libraries as shared libraries" ON)
 
 set(LIBCLI11_URL        "https://github.com/CLIUtils/CLI11.git")
 set(LIBCLI11_VERSION    "v2.4.1")
@@ -95,31 +93,24 @@ set(LIBWHISPER_VERSION  "v1.5.4")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
-set(BUILD_SHARED_LIBS_SAVE ${BUILD_SHARED_LIBS})
+# The dependencies are always built as static libraries. CMP0077 has to be forced to NEW:
+# several dependencies reset it to OLD through their own cmake_minimum_required, and their
+# option(BUILD_SHARED_LIBS ...) calls would then delete the normal variable set below and
+# write a cache entry of their own.
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(BUILD_SHARED_LIBS OFF)
+
 set(CMAKE_C_FLAGS_SAVE ${CMAKE_C_FLAGS})
 set(CMAKE_CXX_FLAGS_SAVE ${CMAKE_CXX_FLAGS})
 include(cmake/${NMCS_TARGET_SYSTEM}.cmake)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_SAVE})
 set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS_SAVE})
-set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_SAVE})
 
-message(STATUS "LIBCLI11_INCLUDE_PATH    = ${LIBCLI11_INCLUDE_PATH}")
-message(STATUS "LIBCLI11_LIBRARY_PATH    = ${LIBCLI11_LIBRARY_PATH}")
-message(STATUS "LIBZ_INCLUDE_PATH        = ${LIBZ_INCLUDE_PATH}")
-message(STATUS "LIBZ_LIBRARY_PATH        = ${LIBZ_LIBRARY_PATH}")
-message(STATUS "LIBCURL_INCLUDE_PATH     = ${LIBCURL_INCLUDE_PATH}")
-message(STATUS "LIBCURL_LIBRARY_PATH     = ${LIBCURL_LIBRARY_PATH}")
-message(STATUS "LIBXML2_INCLUDE_PATH     = ${LIBXML2_INCLUDE_PATH}")
-message(STATUS "LIBXML2_LIBRARY_PATH     = ${LIBXML2_LIBRARY_PATH}")
-message(STATUS "LIBSIMDUTF_INCLUDE_PATH  = ${LIBSIMDUTF_INCLUDE_PATH}")
-message(STATUS "LIBSIMDUTF_LIBRARY_PATH  = ${LIBSIMDUTF_LIBRARY_PATH}")
-message(STATUS "LIBSIMDJSON_INCLUDE_PATH = ${LIBSIMDJSON_INCLUDE_PATH}")
-message(STATUS "LIBSIMDJSON_LIBRARY_PATH = ${LIBSIMDJSON_LIBRARY_PATH}")
-message(STATUS "LIBSPDLOG_INCLUDE_PATH   = ${LIBSPDLOG_INCLUDE_PATH}")
-message(STATUS "LIBSPDLOG_LIBRARY_PATH   = ${LIBSPDLOG_LIBRARY_PATH}")
-message(STATUS "LIBWHISPER_INCLUDE_PATH  = ${LIBWHISPER_INCLUDE_PATH}")
-message(STATUS "LIBWHISPER_LIBRARY_PATH  = ${LIBWHISPER_LIBRARY_PATH}")
+# From here on BUILD_SHARED_LIBS applies to the nmcs libraries only.
+set(BUILD_SHARED_LIBS ${NMCS_BUILD_SHARED})
+if(NMCS_BUILD_SHARED)
+  add_compile_definitions("NMCS_SHARED=1")
+endif()
 
 set(NMCS_INCLUDE_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/include")
 include_directories(${NMCS_INCLUDE_DIRECTORY})
@@ -176,13 +167,12 @@ if(ENABLE_RSS_GATEWAY)
     add_subdirectory("src/gateways/southbound/rss")
 endif()
 
-install(TARGETS nmcsplatform nmcsruntime nmcsmodel nmcsserver nmcsagent nmcsclient)
-install(TARGETS nmcsplatform
+install(TARGETS nmcsplatform nmcsruntime nmcsmodel nmcsserver nmcsagent nmcsclient
   RUNTIME DESTINATION "bin"
   LIBRARY DESTINATION "lib"
   ARCHIVE DESTINATION "lib/${PROJECT_NAME}"
 )
-install(DIRECTORY "include" DESTINATION include)
+install(DIRECTORY "include/" DESTINATION include)
 
 set(CPACK_PACKAGE_NAME "nmcs")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${NMCS_VERSION}-build${NMCS_BUILD_ID}-${NMCS_TARGET_SYSTEM}")

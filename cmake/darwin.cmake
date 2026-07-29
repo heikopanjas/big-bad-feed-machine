@@ -57,156 +57,133 @@ FetchContent_Declare(libcli11
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBCLI11_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libcli11)
-if(NOT libcli11_POPULATED)
-  FetchContent_Populate(libcli11)
-  set(LIBCLI11_INCLUDE_PATH ${libcli11_SOURCE_DIR}/include)
-  set(CLI11_SINGLE_FILE     OFF CACHE INTERNAL "")
-  set(CLI11_BUILD_DOCS      OFF CACHE INTERNAL "")
-  set(CLI11_BUILD_TESTS     OFF CACHE INTERNAL "")
-  set(CLI11_BUILD_EXAMPLES  OFF CACHE INTERNAL "")
-  add_subdirectory(${libcli11_SOURCE_DIR} ${libcli11_BINARY_DIR})
-endif()
+set(CLI11_SINGLE_FILE     OFF CACHE INTERNAL "")
+set(CLI11_BUILD_DOCS      OFF CACHE INTERNAL "")
+set(CLI11_BUILD_TESTS     OFF CACHE INTERNAL "")
+set(CLI11_BUILD_EXAMPLES  OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libcli11)
 
-set(LIBZ_LIBRARY libz)
-FetchContent_Declare(libz
+# zlib has to be available before curl, which locates it through find_package(ZLIB).
+FetchContent_Declare(zlib
   GIT_REPOSITORY ${LIBZ_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBZ_VERSION}
+  EXCLUDE_FROM_ALL
+  OVERRIDE_FIND_PACKAGE
 )
-FetchContent_GetProperties(libz)
-if(NOT libz_POPULATED)
-  FetchContent_Populate(libz)
-  set(LIBZ_INCLUDE_PATH ${libz_BINARY_DIR} ${libz_SOURCE_DIR} ${libz_SOURCE_DIR}/contrib/minizip)
-  set(LIBZ_LIBRARY_PATH ${libz_BINARY_DIR}/libz.a)
-  set(LIBZ_SOURCE_PATH  ${libz_SOURCE_DIR})
-  set(SKIP_INSTALL_ALL  ON CACHE INTERNAL "")
-  add_subdirectory(${libz_SOURCE_DIR} ${libz_BINARY_DIR})
-endif()
+set(SKIP_INSTALL_ALL    ON  CACHE INTERNAL "")
+set(ZLIB_BUILD_EXAMPLES OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(zlib)
 
-set(LIBCURL_LIBRARY libcurl)
+# zlib 1.3.1 ships neither a ZLIB::ZLIB alias nor a package config, so supply both through
+# the FetchContent redirect. This is what makes curl link our static zlib instead of the
+# system libz stub. zlibstatic already exports the source and binary directories as PUBLIC
+# include directories, so zlib.h and the generated zconf.h propagate to consumers.
+file(WRITE "${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/zlib-extra.cmake"
+"if(NOT TARGET ZLIB::ZLIB)
+  add_library(ZLIB::ZLIB ALIAS zlibstatic)
+endif()
+set(ZLIB_LIBRARIES ZLIB::ZLIB)
+set(ZLIB_INCLUDE_DIRS \"${zlib_SOURCE_DIR};${zlib_BINARY_DIR}\")
+")
+
 FetchContent_Declare(libcurl
   GIT_REPOSITORY ${LIBCURL_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBCURL_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libcurl)
-if(NOT libcurl_POPULATED)
-  FetchContent_Populate(libcurl)
-  set(LIBCURL_INCLUDE_PATH ${libcurl_SOURCE_DIR}/include)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(LIBCURL_LIBRARY_PATH ${libcurl_BINARY_DIR}/lib/libcurl-d.a)
-  else()
-    set(LIBCURL_LIBRARY_PATH ${libcurl_BINARY_DIR}/lib/libcurl.a)
-  endif()
-  set(BUILD_CURL_EXE      OFF CACHE INTERNAL "")
-  set(BUILD_BINDINGS      OFF CACHE INTERNAL "")
-  set(BUILD_TESTING       OFF CACHE INTERNAL "")
-  set(ENABLE_MANUAL       OFF CACHE INTERNAL "")
-  set(HTTP_ONLY           ON CACHE INTERNAL "")
-  set(CURL_USE_SECTRANSP  ON CACHE INTERNAL "")
-  add_subdirectory(${libcurl_SOURCE_DIR} ${libcurl_BINARY_DIR})
-endif()
+set(BUILD_CURL_EXE      OFF CACHE INTERNAL "")
+set(BUILD_BINDINGS      OFF CACHE INTERNAL "")
+set(BUILD_TESTING       OFF CACHE INTERNAL "")
+set(ENABLE_MANUAL       OFF CACHE INTERNAL "")
+set(HTTP_ONLY           ON CACHE INTERNAL "")
+set(CURL_USE_SECTRANSP  ON CACHE INTERNAL "")
+# EXCLUDE_FROM_ALL only makes install rules be ignored at install time. curl's
+# install(EXPORT CURLTargets) and export(TARGETS ...) are still generated, and neither can
+# export libcurl_static now that it links zlibstatic, which is in no export set.
+set(CURL_DISABLE_INSTALL      ON  CACHE INTERNAL "")
+set(CURL_ENABLE_EXPORT_TARGET OFF CACHE INTERNAL "")
+# ON rather than AUTO: find_package(ZLIB REQUIRED) fails loudly if the redirect above ever
+# stops working, instead of silently falling back to the system zlib.
+set(CURL_ZLIB           ON CACHE INTERNAL "")
+# Keep whatever happens to be installed on the build host out of the build.
+set(CURL_USE_LIBSSH2    OFF CACHE INTERNAL "")
+set(CURL_USE_LIBPSL     OFF CACHE INTERNAL "")
+set(USE_LIBIDN2         OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libcurl)
 
 FetchContent_Declare(libxml2
   GIT_REPOSITORY ${LIBXML2_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBXML2_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libxml2)
-if(NOT libxml2_POPULATED)
-  FetchContent_Populate(libxml2)
-  set(LIBXML2_INCLUDE_PATH  ${libxml2_SOURCE_DIR})
-  set(LIBXML2_LIBRARY_PATH  ${libxml2_BINARY_DIR}/libxml2.a)
-  set(LIBXML2_WITH_ICONV    OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_ICU      OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_LEGACY   OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_LZMA     OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_PROGRAMS OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_PYTHON   OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_TESTS    OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_DEBUG    OFF CACHE INTERNAL "")
-  set(LIBXML2_WITH_ZLIB     OFF CACHE INTERNAL "")
-  add_subdirectory(${libxml2_SOURCE_DIR} ${libxml2_BINARY_DIR})
-endif()
+set(LIBXML2_WITH_ICONV    OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_ICU      OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_LEGACY   OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_LZMA     OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_PROGRAMS OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_PYTHON   OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_TESTS    OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_DEBUG    OFF CACHE INTERNAL "")
+set(LIBXML2_WITH_ZLIB     OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libxml2)
 
 FetchContent_Declare(libsimdutf
   GIT_REPOSITORY ${LIBSIMDUTF_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBSIMDUTF_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libsimdutf)
-if(NOT libsimdutf_POPULATED)
-  FetchContent_Populate(libsimdutf)
-  set(LIBSIMDUTF_INCLUDE_PATH ${libsimdutf_SOURCE_DIR}/include)
-  set(LIBSIMDUTF_LIBRARY_PATH ${libsimdutf_BINARY_DIR}/src/libsimdutf.a)
-  set(SIMDUTF_TESTS           OFF CACHE INTERNAL "")
-  set(SIMDUTF_BENCHMARKS      OFF CACHE INTERNAL "")
-  set(SIMDUTF_TOOLS           OFF CACHE INTERNAL "")
-  set(SIMDUTF_ICONV           OFF CACHE INTERNAL "")
-  add_subdirectory(${libsimdutf_SOURCE_DIR} ${libsimdutf_BINARY_DIR})
-endif()
+set(SIMDUTF_TESTS           OFF CACHE INTERNAL "")
+set(SIMDUTF_BENCHMARKS      OFF CACHE INTERNAL "")
+set(SIMDUTF_TOOLS           OFF CACHE INTERNAL "")
+set(SIMDUTF_ICONV           OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libsimdutf)
 
 FetchContent_Declare(libsimdjson
   GIT_REPOSITORY ${LIBSIMDJSON_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBSIMDJSON_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libsimdjson)
-if(NOT libsimdjson_POPULATED)
-  FetchContent_Populate(libsimdjson)
-  set(LIBSIMDJSON_INCLUDE_PATH        ${libsimdjson_SOURCE_DIR}/include)
-  set(LIBSIMDJSON_LIBRARY_PATH        ${libsimdjson_BINARY_DIR}/libsimdjson.a)
-  set(SIMDJSON_DEVELOPER_MODE         OFF CACHE INTERNAL "")
-  set(SIMDJSON_DISABLE_DEPRECATED_API OFF CACHE INTERNAL "")
-  set(SIMDJSON_ALLOW_DOWNLOADS        OFF CACHE INTERNAL "")
-  set(SIMDJSON_ENABLE_FUZZING         OFF CACHE INTERNAL "")
-  add_subdirectory(${libsimdjson_SOURCE_DIR} ${libsimdjson_BINARY_DIR})
-endif()
+set(SIMDJSON_DEVELOPER_MODE         OFF CACHE INTERNAL "")
+set(SIMDJSON_DISABLE_DEPRECATED_API OFF CACHE INTERNAL "")
+set(SIMDJSON_ALLOW_DOWNLOADS        OFF CACHE INTERNAL "")
+set(SIMDJSON_ENABLE_FUZZING         OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libsimdjson)
 
 FetchContent_Declare(libspdlog
   GIT_REPOSITORY ${LIBSPDLOG_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBSPDLOG_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libspdlog)
-if(NOT libspdlog_POPULATED)
-  FetchContent_Populate(libspdlog)
-  set(LIBSPDLOG_INCLUDE_PATH ${libspdlog_SOURCE_DIR}/include)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(LIBSPDLOG_LIBRARY_PATH ${libspdlog_BINARY_DIR}/libspdlogd.a)
-  else()
-    set(LIBSPDLOG_LIBRARY_PATH ${libspdlog_BINARY_DIR}/libspdlog.a)
-  endif()
-  set(SPDLOG_BUILD_EXAMPLE OFF CACHE INTERNAL "")
-  add_subdirectory(${libspdlog_SOURCE_DIR} ${libspdlog_BINARY_DIR})
-endif()
+set(SPDLOG_BUILD_EXAMPLE OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libspdlog)
 
 FetchContent_Declare(libwhisper
   GIT_REPOSITORY ${LIBWHISPER_URL}
   GIT_SHALLOW    ON
   GIT_PROGRESS   OFF
   GIT_TAG        ${LIBWHISPER_VERSION}
+  EXCLUDE_FROM_ALL
 )
-FetchContent_GetProperties(libwhisper)
-if(NOT libwhisper_POPULATED)
-  FetchContent_Populate(libwhisper)
-  set(LIBWHISPER_INCLUDE_PATH        ${libwhisper_SOURCE_DIR})
-  set(LIBWHISPER_LIBRARY_PATH        ${libwhisper_BINARY_DIR}/libwhisper.a)
-  set(WHISPER_ALL_WARNINGS           OFF CACHE INTERNAL "")
-  set(WHISPER_ALL_WARNINGS_3RD_PARTY OFF CACHE INTERNAL "")
-  set(WHISPER_BUILD_TESTS            OFF CACHE INTERNAL "")
-  set(WHISPER_BUILD_EXAMPLES         OFF CACHE INTERNAL "")
-  set(WHISPER_PERF                   OFF CACHE INTERNAL "")
-  add_subdirectory(${libwhisper_SOURCE_DIR} ${libwhisper_BINARY_DIR})
-endif()
+set(WHISPER_ALL_WARNINGS           OFF CACHE INTERNAL "")
+set(WHISPER_ALL_WARNINGS_3RD_PARTY OFF CACHE INTERNAL "")
+set(WHISPER_BUILD_TESTS            OFF CACHE INTERNAL "")
+set(WHISPER_BUILD_EXAMPLES         OFF CACHE INTERNAL "")
+set(WHISPER_PERF                   OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libwhisper)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")

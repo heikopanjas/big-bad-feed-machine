@@ -24,8 +24,6 @@
 #
 ################################################################################
 
-include_directories(${LIBCLI11_INCLUDE_PATH})
-
 set(NMCS_CLIENT_INCLUDES
   clientchapterscommand.h
   clientcommon.h
@@ -45,6 +43,10 @@ set(NMCS_PUBLIC_CLIENT_DEPENDENCIES
   nmcsserver
 )
 
+set(NMCS_PRIVATE_CLIENT_DEPENDENCIES
+  CLI11::CLI11
+)
+
 add_executable(nmcsclient
   ${NMCS_CLIENT_INCLUDES}
   ${NMCS_CLIENT_SOURCES}
@@ -52,6 +54,10 @@ add_executable(nmcsclient
 
 target_link_libraries(nmcsclient PUBLIC
   ${NMCS_PUBLIC_CLIENT_DEPENDENCIES}
+)
+
+target_link_libraries(nmcsclient PRIVATE
+  ${NMCS_PRIVATE_CLIENT_DEPENDENCIES}
 )
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")

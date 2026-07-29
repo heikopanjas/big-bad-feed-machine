@@ -24,13 +24,6 @@
 #
 # ##############################################################################
 
-include_directories(
-  ${LIBCURL_INCLUDE_PATH}
-  ${LIBXML2_INCLUDE_PATH}
-  ${LIBSIMDJSON_INCLUDE_PATH}
-  ${LIBSPDLOG_INCLUDE_PATH}
-)
-
 set(NMCS_SERVER_INCLUDES
   ${NMCS_INCLUDE_DIRECTORY}/nmcs/servercredentialservice.h
   ${NMCS_INCLUDE_DIRECTORY}/nmcs/serverfileservice.h
@@ -78,28 +71,20 @@ set(NMCS_PUBLIC_SERVER_DEPENDENCIES
 )
 
 set(NMCS_PRIVATE_SERVER_DEPENDENCIES
-  ${LIBCURL_LIBRARY}
-  ${LIBXML2_LIBRARY}
-  ${LIBSIMDJSON_LIBRARY}
-  ${LIBSPDLOG_LIBRARY}
+  CURL::libcurl
+  LibXml2::LibXml2
+  simdjson::simdjson
+  spdlog::spdlog
 )
 
 add_library(nmcsserver ${NMCS_SERVER_INCLUDES} ${NMCS_SERVER_SOURCES})
-
-# add_dependencies(nmcsserver
-#   ${NMCS_PUBLIC_SERVER_DEPENDENCIES}
-#   ${NMCS_PRIVATE_SERVER_DEPENDENCIES}
-# )
 
 target_link_libraries(nmcsserver PUBLIC
   ${NMCS_PUBLIC_SERVER_DEPENDENCIES}
 )
 
 target_link_libraries(nmcsserver PRIVATE
-  ${LIBCURL_LIBRARY_PATH}
-  ${LIBXML2_LIBRARY_PATH}
-  ${LIBSIMDJSON_LIBRARY_PATH}
-  ${LIBSPDLOG_LIBRARY_PATH}
+  ${NMCS_PRIVATE_SERVER_DEPENDENCIES}
 )
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
